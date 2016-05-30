@@ -3,6 +3,8 @@ package com.werdpressed.partisan.texttobinary;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,8 @@ import java.io.UnsupportedEncodingException;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String CLIP_TAG = "Binary String";
+
+    private static final String ERROR_STRING = "nothing_to_see_here_move_along";
 
     private static final String INPUT_TAG = "input_tag";
     private static final String OUTPUT_TAG = "output_tag";
@@ -44,6 +48,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (!prefs.getString(INPUT_TAG, ERROR_STRING).equals(ERROR_STRING)){
+            input.setText(prefs.getString(INPUT_TAG, ERROR_STRING));
+        }
+
+        if (!prefs.getString(OUTPUT_TAG, ERROR_STRING).equals(ERROR_STRING)){
+            output.setText(prefs.getString(OUTPUT_TAG, ERROR_STRING));
+        }
+
         if (savedInstanceState != null) {
             input.setText(savedInstanceState.getString(INPUT_TAG));
             output.setText(savedInstanceState.getString(OUTPUT_TAG));
@@ -56,6 +70,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onSaveInstanceState(outState);
         outState.putString(INPUT_TAG, input.getText().toString());
         outState.putString(OUTPUT_TAG, output.getText().toString());
+    }
+
+    @Override
+    protected void onDestroy() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putString(INPUT_TAG, input.getText().toString()).apply();
+        prefs.edit().putString(OUTPUT_TAG, output.getText().toString()).apply();
+        super.onDestroy();
     }
 
     @Override
