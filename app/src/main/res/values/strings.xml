@@ -4,10 +4,15 @@
 
     <!-- MainActivity -->
     <string name="clipboard_msg">"Binary Text copied to Clipboard"</string>
-    <string name="convert_title">Binary Output</string>
+    <string name="convert_title">Output %1$s</string>
+    <string name="binary">Binary</string>
+    <string name="hex">Hex</string>
 
     <!-- Main Menu -->
     <string name="menu_share">Share</string>
     <string name="menu_clipboard">Copy to Clipboard</string>
+    <string name="menu_swap">Swap Output</string>
+    <string name="menu_swap_binary">Binary</string>
+    <string name="menu_swap_hex">Hex</string>
 
 </resources>

@@ -14,4 +14,24 @@
         android:icon="@drawable/ic_content_paste_white_24dp"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_swap"
+        android:title="@string/menu_swap"
+        android:icon="@drawable/ic_swap_horiz_white_24dp"
+        app:showAsAction="ifRoom">
+
+        <menu>
+
+            <item
+                android:id="@+id/action_swap_binary"
+                android:title="@string/menu_swap_binary" />
+
+            <item
+                android:id="@+id/action_swap_hex"
+                android:title="@string/menu_swap_hex" />
+
+        </menu>
+
+    </item>
+
 </menu>
