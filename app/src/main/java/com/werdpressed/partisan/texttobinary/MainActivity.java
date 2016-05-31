@@ -4,22 +4,19 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.UnsupportedEncodingException;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements TextWatcher {
 
     private static final String CLIP_TAG = "Binary String";
 
@@ -41,10 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         input = (EditText) findViewById(R.id.input_et);
         output = (TextView) findViewById(R.id.output_tv);
 
-        Button convertBtn = (Button) findViewById(R.id.button);
-        if (convertBtn != null) {
-            convertBtn.setOnClickListener(this);
-        }
+        input.addTextChangedListener(this);
+        output.setMovementMethod(new ScrollingMovementMethod());
 
         clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
@@ -102,29 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View v) {
-
-        byte[] inputBytes = null;
-
-        try {
-            inputBytes = input.getText().toString().getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        StringBuilder builder = new StringBuilder();
-
-        for (byte b : inputBytes) {
-            String s = String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');
-            builder.append(s);
-            builder.append(" ");
-        }
-
-        output.setText(builder.toString());
-
-    }
-
     private static Intent getShareIntent(String outgoingText) {
 
         Intent i = new Intent(Intent.ACTION_SEND);
@@ -134,4 +106,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private static String getBinaryString(String input) {
+
+        byte[] inputBytes = input.getBytes();
+
+        StringBuilder builder = new StringBuilder();
+
+        for (byte b : inputBytes) {
+            String s = String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');
+            builder.append(s);
+            builder.append(" ");
+        }
+
+        return builder.toString();
+
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        output.setText(getBinaryString(s.toString()));
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }

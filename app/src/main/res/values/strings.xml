@@ -4,7 +4,7 @@
 
     <!-- MainActivity -->
     <string name="clipboard_msg">"Binary Text copied to Clipboard"</string>
-    <string name="convert_btn">Convert To Binary</string>
+    <string name="convert_title">Binary Output</string>
 
     <!-- Main Menu -->
     <string name="menu_share">Share</string>
